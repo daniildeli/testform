@@ -3,12 +3,12 @@
     {
       "id": 1,
       "title": "First post",
-      "body": "Some interesting text"
+      "body": "Some interesting text from the first post"
     },
     {
       "id": 2,
       "title": "Second post",
-      "body": "Other interesting text"
+      "body": "Other interesting text from the second post"
     }
   ]
 }

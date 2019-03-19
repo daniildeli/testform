@@ -20,6 +20,11 @@
 
 const myForm = document.querySelector('#my-test-form');
 const radioInputs = document.getElementsByName('radioAction');
+const postId = myForm.querySelector('#post-id');
+const postTitle = myForm.querySelector('#post-title');
+const postBody = myForm.querySelector('#post-body');
+
+
 
 function getAction() {
   for(let i = 0; i < radioInputs.length; i++) {
@@ -32,8 +37,12 @@ function getAction() {
 function makeRequest() {
   console.log(getAction());
   let action = getAction();
-  let api = 'https://my-json-server.typicode.com/daniildeli/testform/posts/1';
+  let api = 'https://my-json-server.typicode.com/daniildeli/testform/posts/';
 
+  switch(action.toLowerCase()) {
+    case 'get': 
+      api += postId.value;
+  }
   let promise = new Promise((resolve, reject) => {
     let xhr = new XMLHttpRequest();
 
