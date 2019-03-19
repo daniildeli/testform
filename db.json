@@ -2,10 +2,12 @@
   "posts": [
     {
       "id": 1,
+      "title": "First post",
       "body": "Some interesting text"
     },
     {
       "id": 2,
+      "title": "Second post",
       "body": "Other interesting text"
     }
   ]
