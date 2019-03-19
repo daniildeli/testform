@@ -34,31 +34,63 @@ function getAction() {
   }
 }
 
-function makeRequest() {
+function makeRequest(action = getAction()) {
   console.log(getAction());
-  let action = getAction();
+  
   let api = 'https://my-json-server.typicode.com/daniildeli/testform/posts/';
 
-  switch(action.toLowerCase()) {
-    case 'get': 
-      api += postId.value;
+  if(action.toLowerCase() !== 'create') {
+    api += postId.value;
   }
-  let promise = new Promise((resolve, reject) => {
-    let xhr = new XMLHttpRequest();
+  
+  let obj = {};
 
+  let promise = new Promise((resolve, reject) => {
+
+    let xhr = new XMLHttpRequest();
     xhr.open(action.toUpperCase(), api, true);
-    xhr.send();
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+    switch (action.toLowerCase()) {
+      case 'get':  
+        xhr.send();
+        break;
+
+      case 'post':
+        
+        obj.title = postTitle.value,
+        obj.body = postBody.value;
+        
+
+        xhr.send(JSON.stringify(obj));
+        break;
+
+
+      // case 'put':
+      //   obj.title = postTitle.value,
+      //   obj.body = postBody.value;
+
+      //   xhr.send(JSON.stringify(obj));
+      //   break;
+
+      // case 'delete':
+      //   xhr.send();
+      //   break;
+    }    
 
 
     xhr.onreadystatechange = function () {
       if (xhr.status !== 200) {
         reject(`${xhr.status}: ${xhr.statusText}`);
       }
+
       if (!!xhr.response) {
-        resolve(xhr.response);
+        resolve(JSON.parse(xhr.response));
       }
+
     };
   });
+
   return promise;
 }
 
@@ -67,7 +99,7 @@ myForm.addEventListener('click', (e) => {
   while (target !== myForm) {
     if (target.tagName === 'BUTTON') {
       makeRequest()
-        .then((result) => console.log(JSON.parse(result)))
+        .then((result) => console.log(result))
         .catch((error) => console.log('Error: ', error));
     }
 

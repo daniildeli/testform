@@ -9,6 +9,11 @@
       "id": 2,
       "title": "Second post",
       "body": "Other interesting text from the second post"
+    },
+    {
+      "id": 5,
+      "title": "Second post",
+      "body": "Other interesting text from the second post"
     }
   ]
 }
