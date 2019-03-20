@@ -1,9 +1,14 @@
 {
   "posts": [
     {
-      "id": "0f9949cb-3cc9-40ee-adff-da0d0c4ae8ac",
-      "title": "First post",
-      "body": "Some interesting text from the first post"
+      "id": "4db3b2df-9d49-4d63-b930-d05c1a3d47b7",
+      "title": "New post",
+      "body": "Text of new post"
+    },
+    {
+      "id": "4de75f74-dd9b-4087-9668-67c00ea86f57",
+      "title": "asdasd",
+      "body": "sdasd"
     }
   ]
 }

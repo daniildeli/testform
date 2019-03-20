@@ -1,23 +1,4 @@
-// let login = "login";
-// let pass = 'pass';
-
-// let xhr = new XMLHttpRequest();
-
-// let body = {
-//   "title": "titleName",
-//   "body": 'Body'
-// };
-
-// xhr.open('POST', 'https://my-json-server.typicode.com/daniildeli/testform/posts', true);
-// // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-// xhr.setRequestHeader('Content-Type', 'application/json');
-
-// xhr.send(JSON.stringify(body));
-
-// xhr.onreadystatechange = function () {
-//   console.log(xhr.responseText);
-// };
-
+'use strict';
 // ------------------------- Using Promises ------------------------------------------------
 
 const myForm = document.querySelector('#my-test-form');
@@ -25,8 +6,14 @@ const radioInputs = document.getElementsByName('radioAction');
 const postId = myForm.querySelector('#post-id');
 const postTitle = myForm.querySelector('#post-title');
 const postBody = myForm.querySelector('#post-body');
+const typeElements = myForm.getElementsByClassName('type-element');
+const radioFieldset = myForm.querySelectorAll('.radio-fieldset')[0];
 
-
+function uuidv4() {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
 
 function getAction() {
   for(let i = 0; i < radioInputs.length; i++) {
@@ -36,44 +23,156 @@ function getAction() {
   }
 }
 
-// function validate(action) {
-//   if(!!action) {
-//     switch (action.toLowerCase()) {
-//       case 'get':
-//         // if (!!postId.value) {
-//         //   return new Promise.reject('Provide with ID');
-//         // }
-//         postTitle.setAttribute('disabled, disabled');
-//     }
-//   } 
-// }
+function validate() {
+  const action = getAction();
 
-function makeRequest() {
-  const action = getAction().toLowerCase();
+  if(!action) {
+    radioFieldset.classList.add('error');
+    throw new Error('Choose action');
+  }
+
+  switch (action.toLowerCase()) {
+    case 'get': 
+      if(!postId.value) {
+        postId.classList.add('error');
+        throw new Error('Provide with ID');
+      }
+
+      break;
+
+    case 'post':
+      if (!postTitle.value) {
+        postTitle.classList.add('error');
+      }
+
+      if (!postBody.value) {
+        postBody.classList.add('error');
+      }
+
+      if (!postTitle.value || !postBody.value) {
+        throw new Error('Provide with title and post text');
+      }
+
+      break;
+
+    case 'put':
+      if (!postId.value) {
+        postId.classList.add('error');
+      }
+
+      if (!postTitle.value) {
+        postTitle.classList.add('error');
+      }
+
+      if (!postBody.value) {
+        postBody.classList.add('error');
+      }
+      if (!postId.value || !postTitle.value || !postBody.value) {
+        throw new Error('Provide with ID, title and text');
+      }
+    break;
+
+    case 'delete':
+      if (!postId.value) {
+        postId.classList.add('error');
+        throw new Error('Provide with ID');
+      }
+
+      break;
+
+    default: return;
+  }  
+}
+
+function clearInputs(arg = typeElements) {
+  for (let i = 0; i < arg.length; i++) {
+    arg[i].value = '';
+  }
+
+  return;
+}
+
+function setInputsState() {
+
+  for (let i = 0; i < typeElements.length; i++) {
+    typeElements[i].removeAttribute('required');
+    typeElements[i].removeAttribute('disabled');
+  }
+
+  const action = getAction();
+
+  if (action.toLowerCase() === 'get' || action.toLowerCase() === 'delete') {
+    postId.setAttribute('required', true);
+    postTitle.setAttribute('disabled', true);
+    postBody.setAttribute('disabled', true);
+  }
+
+  if (action.toLowerCase() === 'post' || action.toLowerCase() === 'put') {
+    postTitle.setAttribute('required', true);
+    postBody.setAttribute('required', true);
+  }
+
+  if (action.toLowerCase() === 'post') {
+    postId.setAttribute('disabled', true);
+  }
+
+  if (action.toLowerCase() === 'put') {
+    postId.setAttribute('required', true);
+  }
+
+  const arrToClear = [];
+
+  for (let i = 0; i < typeElements.length; i++) {
+    if (typeElements[i].disabled) {
+      arrToClear.push(typeElements[i]);
+    }
+  }
+
+  clearInputs(arrToClear);
+}
+
+function makeRequest(action = getAction().toLowerCase()) {
   console.log(action);
 
   let api = action === 'post' ? 'https://my-json-server.typicode.com/daniildeli/testform/posts/' : `https://my-json-server.typicode.com/daniildeli/testform/posts/${postId.value}`;
   
   // let api = action.toLowerCase() === 'post' ? 'http://localhost:3000/posts' : `http://localhost:3000/posts/${postId.value}`;
     
-  let obj = {};
+  const obj = {};
 
-  let promise = new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
 
     let xhr = new XMLHttpRequest();
     xhr.open(action.toUpperCase(), api);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');    
 
+    if (action === 'post') {
+      obj.id = uuidv4();
+    }
+
     if (action === 'post' || action === 'put') {
       obj.title = postTitle.value;
       obj.body = postBody.value;
-
       xhr.send(JSON.stringify(obj));
     } else {
       xhr.send();
     }
 
+    if(action === 'put') {
+      postId.addEventListener('input', () => {
+        makeRequest('get')
+          .then((result) => console.log(result.title))
+          .catch((err) => console.log(err));
+      });
+    }
+
+    const postID = postId.value || null;
+
     xhr.onreadystatechange = function () {
+      if (xhr.status === 404 && action === 'delete' || xhr.status === 404 && action === 'get') {
+        reject(`Post with ID: '${postID}' not found`);
+      }
+
       if (xhr.status !== 200 && xhr.status !== 201) {
         reject(`${xhr.status}: ${xhr.statusText}`);
       }
@@ -92,11 +191,11 @@ function makeRequest() {
             break;
 
           case 'put':
-            arg = `Post ${postId.value} was updated`;
+            arg = `Post ${postID} was updated`;
             break;
 
           case 'delete':
-            arg = `Post ${postId.value} was deleted`;
+            arg = `Post ${postID} was deleted`;
             break;
         }
 
@@ -105,7 +204,7 @@ function makeRequest() {
 
     };
   });
-
+  
   return promise;
 }
 
@@ -113,8 +212,12 @@ myForm.addEventListener('click', (e) => {
   let target = e.target;
   while (target !== myForm) {
     if (target.tagName === 'BUTTON') {
+      validate();
       makeRequest()
-        .then((result) => console.log(result))
+        .then((result) => { 
+          console.log(result); 
+          clearInputs(); 
+        })
         .catch((error) => console.log('Error: ', error));
     }
 
@@ -122,13 +225,37 @@ myForm.addEventListener('click', (e) => {
   }
 });
 
-// function uuidv4() {
-//   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-//     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-//   )
-// }
+myForm.addEventListener('input', (e) => {
+  let target = e.target;
+  while (target !== myForm) {
+    if(target.classList.contains('error')) {
+      target.classList.remove('error');
+    }
 
-// console.log(uuidv4());
+    if (target.name === 'radioAction') {
+      for(let i = 0; i < typeElements.length; i++) {
+        if (typeElements[i].classList.contains('error')) {
+          typeElements[i].classList.remove('error');
+        }
+      }
+
+      setInputsState();
+    }
+
+    if (target.tagName === 'INPUT') {
+      if (getAction() === 'put' && postId.value.length === 36) {
+        makeRequest('get')
+          .then((result) => {
+            postTitle.value = result.title;
+            postBody.value = result.body;
+          })
+          .catch((err) => console.log(err));
+      }
+    }
+
+    target = target.parentNode;
+  }
+});
 
 // ------------------------------ Using Fetch--------------------------------------------------------
 

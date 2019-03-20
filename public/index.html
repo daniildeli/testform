@@ -4,20 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="../style.css" rel="stylesheet">
   <title>Document</title>
 </head>
 <body>
   <form id="my-test-form">
-    <fieldset>
+    <fieldset class="radio-fieldset">
       <input type="radio" name="radioAction" value="get">Get by ID
       <input type="radio" name="radioAction" value="post">Create post
       <input type="radio" name="radioAction" value="put">Update post
       <input type="radio" name="radioAction" value="delete">Delete post
+      <!-- <div class="error-message">
+        <span>This field is required</span>
+      </div> -->
     </fieldset>
     <fieldset>
-      <input type="text" id="post-id" placeholder="ID">
-      <input type="text" id="post-title" placeholder="title">
-      <textarea id="post-body" placeholder="Post"></textarea>
+      <input class="type-element" type="text" id="post-id" placeholder="ID">
+      <input class="type-element" type="text" id="post-title" placeholder="title">
+      <textarea class="type-element" id="post-body" placeholder="Post"></textarea>
+      <!-- <div class="error-message">
+        <span>This field is required</span>
+      </div> -->
       <button type="button">Submit</button>
     </fieldset>
   </form>
@@ -27,19 +34,9 @@
   {
     "posts": [
       {
-        "id": 1,
+        "id": "0f9949cb-3cc9-40ee-adff-da0d0c4ae8ac",
         "title": "First post",
         "body": "Some interesting text from the first post"
-      },
-      {
-        "id": 2,
-        "title": "Second post",
-        "body": "Other interesting text from the second post"
-      },
-      {
-        "id": 5,
-        "title": "Second post",
-        "body": "Other interesting text from the second post"
       }
     ]
   }

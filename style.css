@@ -1,0 +1,12 @@
+.error {
+  border-color: red;
+  position: relative;
+  z-index: 1;
+}
+
+/* .error-message {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  z-index: -10;
+} */
