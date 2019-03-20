@@ -49,48 +49,29 @@ function getAction() {
 // }
 
 function makeRequest() {
-  const action = getAction();
+  const action = getAction().toLowerCase();
   console.log(action);
 
-  let api = action.toLowerCase() === 'post' ? 'https://my-json-server.typicode.com/daniildeli/testform/posts/' : `https://my-json-server.typicode.com/daniildeli/testform/posts/${postId.value}`;
+  let api = action === 'post' ? 'https://my-json-server.typicode.com/daniildeli/testform/posts/' : `https://my-json-server.typicode.com/daniildeli/testform/posts/${postId.value}`;
+  
+  // let api = action.toLowerCase() === 'post' ? 'http://localhost:3000/posts' : `http://localhost:3000/posts/${postId.value}`;
     
   let obj = {};
 
   let promise = new Promise((resolve, reject) => {
 
     let xhr = new XMLHttpRequest();
-    xhr.open(action.toUpperCase(), api, true);
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xhr.open(action.toUpperCase(), api);
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');    
 
-    switch (action.toLowerCase()) {
+    if (action === 'post' || action === 'put') {
+      obj.title = postTitle.value;
+      obj.body = postBody.value;
 
-      case 'get':  
-
-        xhr.send();
-        break;
-
-      case 'post':
-        
-        obj.title = postTitle.value;
-        obj.body = postBody.value;
-        
-
-        xhr.send(JSON.stringify(obj));
-        break;
-
-
-      case 'put':
-        obj.title = postTitle.value;
-        obj.body = postBody.value;
-
-        xhr.send(JSON.stringify(obj));
-        break;
-
-      case 'delete':
-        xhr.send();
-        break;
-    }    
-
+      xhr.send(JSON.stringify(obj));
+    } else {
+      xhr.send();
+    }
 
     xhr.onreadystatechange = function () {
       if (xhr.status !== 200 && xhr.status !== 201) {
@@ -136,10 +117,18 @@ myForm.addEventListener('click', (e) => {
         .then((result) => console.log(result))
         .catch((error) => console.log('Error: ', error));
     }
-    
+
     target = target.parentNode;
   }
 });
+
+// function uuidv4() {
+//   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+//     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+//   )
+// }
+
+// console.log(uuidv4());
 
 // ------------------------------ Using Fetch--------------------------------------------------------
 

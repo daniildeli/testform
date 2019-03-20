@@ -1,0 +1,19 @@
+{
+  "name": "testform",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "json:server": "json-server --watch db.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daniildeli/testform.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daniildeli/testform/issues"
+  },
+  "homepage": "https://github.com/daniildeli/testform#readme"
+}

@@ -1,19 +1,9 @@
 {
   "posts": [
     {
-      "id": 1,
+      "id": "0f9949cb-3cc9-40ee-adff-da0d0c4ae8ac",
       "title": "First post",
       "body": "Some interesting text from the first post"
-    },
-    {
-      "id": 2,
-      "title": "Second post",
-      "body": "Other interesting text from the second post"
-    },
-    {
-      "id": 5,
-      "title": "Second post",
-      "body": "Other interesting text from the second post"
     }
   ]
 }
