@@ -1,3 +1,7 @@
+pre{
+  overflow: hidden;
+  word-wrap: break-word;
+}
 .error {
   border-color: red;
   position: relative;
