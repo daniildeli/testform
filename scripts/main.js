@@ -10,6 +10,16 @@ const typeElements = myForm.getElementsByClassName('type-element');
 const radioFieldset = myForm.querySelectorAll('.radio-fieldset')[0];
 const codePlace = document.getElementsByClassName('code')[0];
 
+function printData() {
+  makeRequest('https://my-json-server.typicode.com/daniildeli/testform/posts/', 'get')
+    .then((result) => {
+      codePlace.innerText = JSON.stringify(result);
+
+    });
+}
+
+window.onload = printData();
+
 
 function uuidv4() {
   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -211,7 +221,6 @@ function makeRequest(myApi, action = getAction().toLowerCase()) {
   return promise;
 }
 
-
 myForm.addEventListener('click', (e) => {
   let target = e.target;
   while (target !== myForm) {
@@ -259,15 +268,7 @@ myForm.addEventListener('input', (e) => {
   }
 });
 
-function printData() {
-  makeRequest('https://my-json-server.typicode.com/daniildeli/testform/posts/', 'get')
-    .then((result) => {
-      codePlace.innerText = JSON.stringify(result);
-      
-    });
-}
 
-window.onload = printData();
 
 // ------------------------------ Using Fetch--------------------------------------------------------
 

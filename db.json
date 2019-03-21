@@ -1,19 +1,19 @@
 {
   "posts": [
     {
-      "id": "4db3b2df-9d49-4d63-b930-d05c1a3d47b7",
       "title": "New post",
-      "body": "Text of new post"
+      "body": "New post text",
+      "id": "a750c471-9156-48d7-8f9d-677f08dd4191"
     },
     {
-      "id": "4de75f74-dd9b-4087-9668-67c00ea86f57",
-      "title": "asdasd",
-      "body": "sdasd"
+      "id": "0bbee1b7-fd24-4c73-91f2-35a34b6f936d",
+      "title": "Another post",
+      "body": "Another post created"
     },
     {
-      "title": "New post",
-      "body": "This is another text of the new post ",
-      "id": "7d9e8765-4b9b-411f-8dd5-c66eae643b39"
+      "id": "78a5ea7a-6e4d-4b0f-bd6e-9356c2c1eb9c",
+      "title": "asdas",
+      "body": "dsadsad"
     }
   ]
 }
